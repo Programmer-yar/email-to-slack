@@ -44,22 +44,20 @@ def main() -> None:
         channel_id = ch_ids.get(route_key) if route_key else None
         u_ids = config.slack.user_ids or USER_IDS
         user_id = u_ids.get(route_key) if route_key else None
-        file_links = []
-        for att in em.get("attachments") or []:
-            up = slack.upload_file(
-                content=att["content"],
-                filename=att.get("filename", "attachment"),
-                channel_id=channel_id if channel_id else user_id,
-            )
-            print(f"Uploaded file: {up}")
-            if up and up.get("permalink"):
-                file_links.append({"name": up["name"], "url": up["permalink"]})
+        
+        # Check if there are attachments
+        attachments = em.get("attachments") or []
+        has_attachments = len(attachments) > 0
+        
+        # Build blocks with attachments section if needed
         blocks = build_blocks_for_email(
             subject=parsed.subject,
             date=parsed.date,
             text_content=parsed.text_content,
-            file_links=file_links,
+            has_attachments=has_attachments,
         )
+        
+        # Post the message first
         print(f"Blocks: {blocks}")
         slack.post_blocks(
             blocks=blocks,
@@ -67,6 +65,16 @@ def main() -> None:
             user_id=user_id,
             text=f"City of San Diego: {parsed.subject}",
         )
+        
+        # Then upload attachments (they will appear as separate messages after)
+        if has_attachments:
+            for att in attachments:
+                slack.upload_file(
+                    content=att["content"],
+                    filename=att.get("filename", "attachment"),
+                    channel_id=channel_id,
+                    user_id=user_id,
+                )
 
 
 if __name__ == "__main__":
