@@ -1,0 +1,492 @@
+{
+  "name": "email to slack working",
+  "nodes": [
+    {
+      "parameters": {
+        "select": "channel",
+        "channelId": {
+          "__rl": true,
+          "value": "C0ACMRV4JKY",
+          "mode": "list",
+          "cachedResultName": "recheck-required"
+        },
+        "messageType": "block",
+        "blocksUi": "={{ {blocks: $json.blocks} }}",
+        "text": "City of San Diego Email",
+        "otherOptions": {}
+      },
+      "type": "n8n-nodes-base.slack",
+      "typeVersion": 2.4,
+      "position": [
+        272,
+        -144
+      ],
+      "id": "57321837-1188-49e2-aedc-a5cad6c50cbe",
+      "name": "recheck required",
+      "webhookId": "8004e25f-2b6b-4b2a-94c9-56c741471d24",
+      "credentials": {
+        "slackApi": {
+          "id": "rdx7tF0ARHyWxaNr",
+          "name": "Development & design bot"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "select": "channel",
+        "channelId": {
+          "__rl": true,
+          "value": "C0ACHG9EFNF",
+          "mode": "list",
+          "cachedResultName": "pending-invoice-payment"
+        },
+        "messageType": "block",
+        "blocksUi": "={{ {blocks: $json.blocks} }}",
+        "text": "City of San Diego Email",
+        "otherOptions": {}
+      },
+      "type": "n8n-nodes-base.slack",
+      "typeVersion": 2.4,
+      "position": [
+        272,
+        48
+      ],
+      "id": "320b5f37-c679-4a78-9b07-b55c393b4a2e",
+      "name": "review pending",
+      "webhookId": "8004e25f-2b6b-4b2a-94c9-56c741471d24",
+      "credentials": {
+        "slackApi": {
+          "id": "rdx7tF0ARHyWxaNr",
+          "name": "Development & design bot"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "select": "channel",
+        "channelId": {
+          "__rl": true,
+          "value": "C0ACHGN84BV",
+          "mode": "list",
+          "cachedResultName": "permit-issuance"
+        },
+        "messageType": "block",
+        "blocksUi": "={{ {blocks: $json.blocks} }}",
+        "text": "City of San Diego Email",
+        "otherOptions": {}
+      },
+      "type": "n8n-nodes-base.slack",
+      "typeVersion": 2.4,
+      "position": [
+        272,
+        256
+      ],
+      "id": "3fb52a73-5941-4f96-a38c-df421010fdbc",
+      "name": "permit issuance",
+      "webhookId": "8004e25f-2b6b-4b2a-94c9-56c741471d24",
+      "credentials": {
+        "slackApi": {
+          "id": "rdx7tF0ARHyWxaNr",
+          "name": "Development & design bot"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "select": "channel",
+        "channelId": {
+          "__rl": true,
+          "value": "C0ACHGN84BV",
+          "mode": "list",
+          "cachedResultName": "permit-issuance"
+        },
+        "messageType": "block",
+        "blocksUi": "={{ {blocks: $json.blocks} }}",
+        "text": "City of San Diego Email",
+        "otherOptions": {}
+      },
+      "type": "n8n-nodes-base.slack",
+      "typeVersion": 2.4,
+      "position": [
+        272,
+        448
+      ],
+      "id": "efa0c46c-cd55-4114-973e-5946fe304564",
+      "name": "checklist required",
+      "webhookId": "8004e25f-2b6b-4b2a-94c9-56c741471d24",
+      "credentials": {
+        "slackApi": {
+          "id": "rdx7tF0ARHyWxaNr",
+          "name": "Development & design bot"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "select": "user",
+        "user": {
+          "__rl": true,
+          "value": "U0ACD9N7ZTN",
+          "mode": "list",
+          "cachedResultName": "ahmadyar228"
+        },
+        "messageType": "block",
+        "blocksUi": "={{ {blocks: $json.blocks} }}",
+        "text": "City of San Diego Email",
+        "otherOptions": {}
+      },
+      "type": "n8n-nodes-base.slack",
+      "typeVersion": 2.4,
+      "position": [
+        288,
+        608
+      ],
+      "id": "032117c5-a53e-402c-9fa9-80aeb6bd4f38",
+      "name": "test flow",
+      "webhookId": "8004e25f-2b6b-4b2a-94c9-56c741471d24",
+      "credentials": {
+        "slackApi": {
+          "id": "rdx7tF0ARHyWxaNr",
+          "name": "Development & design bot"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "format": "resolved",
+        "options": {
+          "customEmailConfig": "[[\"UNSEEN\"], [\"OR\", [\"FROM\", \"noreply@sandiego.gov\"], [\"FROM\", \"ahmadyar228@gmail.com\"]]]",
+          "trackLastMessageId": true
+        }
+      },
+      "type": "n8n-nodes-base.emailReadImap",
+      "typeVersion": 2.1,
+      "position": [
+        -1184,
+        352
+      ],
+      "id": "6379ffbe-326b-461a-822c-8b1f92e2bebe",
+      "name": "Yahoo Email Trigger (IMAP)",
+      "credentials": {
+        "imap": {
+          "id": "cJEBw3j5UgQjHgcv",
+          "name": "IMAP account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 3
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $json.subject.toLowerCase() }}",
+                    "rightValue": "recheck required",
+                    "operator": {
+                      "type": "string",
+                      "operation": "contains"
+                    },
+                    "id": "e7d19aa0-6a9b-4c64-9b2c-2d27d050f8a9"
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "recheck required"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 3
+                },
+                "conditions": [
+                  {
+                    "id": "85075d82-63bc-4bff-aec4-b9ef77d7bcdd",
+                    "leftValue": "={{ $json.subject.toLowerCase() }}",
+                    "rightValue": "review is pending",
+                    "operator": {
+                      "type": "string",
+                      "operation": "contains"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "=review pending"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 3
+                },
+                "conditions": [
+                  {
+                    "id": "8a659daa-051c-4c22-8f42-78e7ecba63d4",
+                    "leftValue": "={{ $json.subject.toLowerCase() }}",
+                    "rightValue": "permit issu",
+                    "operator": {
+                      "type": "string",
+                      "operation": "contains"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "permit issuance"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 3
+                },
+                "conditions": [
+                  {
+                    "id": "55da291d-c77a-43f7-a775-ec0aca162e1b",
+                    "leftValue": "={{ $json.subject.toLowerCase() }}",
+                    "rightValue": "=checklist requested",
+                    "operator": {
+                      "type": "string",
+                      "operation": "contains"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "checklist requested"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 3
+                },
+                "conditions": [
+                  {
+                    "id": "5fcc444d-7c6d-4a1b-ab17-bcec92a44b9e",
+                    "leftValue": "={{ $json.subject.toLowerCase() }}",
+                    "rightValue": "test flow",
+                    "operator": {
+                      "type": "string",
+                      "operation": "contains"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "test flow"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3.4,
+      "position": [
+        -144,
+        304
+      ],
+      "id": "47161cc5-85a2-4abf-b4bd-dcf8db18c8c4",
+      "name": "Switch on email Subject",
+      "notesInFlow": true,
+      "executeOnce": false,
+      "alwaysOutputData": false
+    },
+    {
+      "parameters": {
+        "resource": "file",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.slack",
+      "typeVersion": 2.4,
+      "position": [
+        -544,
+        352
+      ],
+      "id": "e1f7adf5-1d1b-4a65-a8aa-268b4fce986c",
+      "name": "Upload a file",
+      "webhookId": "e52f6c79-4ab1-454e-8c2e-a68d0ce879d3",
+      "credentials": {
+        "slackApi": {
+          "id": "rdx7tF0ARHyWxaNr",
+          "name": "Development & design bot"
+        }
+      },
+      "onError": "continueRegularOutput",
+      "notes": "This node now processes multiple attachments coming with an email"
+    },
+    {
+      "parameters": {
+        "language": "pythonNative",
+        "pythonCode": "def extract_href(tag):\n    \"\"\"Extract href value from an anchor tag string (no regex)\"\"\"\n    tag_lower = tag.lower()\n    href_pos = tag_lower.find('href=')\n    if href_pos == -1:\n        return None\n    \n    # Find the quote character used (single or double)\n    start = href_pos + 5\n    if start >= len(tag):\n        return None\n    \n    quote_char = tag[start]\n    if quote_char not in ('\"', \"'\"):\n        # No quote, find space or >\n        end = start\n        while end < len(tag) and tag[end] not in (' ', '>', '\\t'):\n            end += 1\n        return tag[start:end]\n    \n    # Find closing quote\n    end = tag.find(quote_char, start + 1)\n    if end == -1:\n        return None\n    return tag[start + 1:end]\n\ndef convert_links_to_slack(html):\n    \"\"\"Convert <a href='URL'>text</a> to Slack mrkdwn format <URL|text>\"\"\"\n    result = ''\n    i = 0\n    \n    while i < len(html):\n        # Look for <a (case insensitive)\n        if html[i] == '<' and i + 2 < len(html) and html[i+1:i+3].lower() in ('a ', 'a\\t', 'a>'):\n            # Find the end of opening tag\n            tag_end = html.find('>', i)\n            if tag_end == -1:\n                result += html[i]\n                i += 1\n                continue\n            \n            opening_tag = html[i:tag_end + 1]\n            href = extract_href(opening_tag)\n            \n            # Find </a>\n            close_tag = html.lower().find('</a>', tag_end)\n            if close_tag == -1:\n                result += html[i]\n                i += 1\n                continue\n            \n            # Extract link text (content between > and </a>)\n            link_text = html[tag_end + 1:close_tag]\n            \n            # Strip any HTML tags from link text\n            clean_text = ''\n            in_tag = False\n            for c in link_text:\n                if c == '<':\n                    in_tag = True\n                elif c == '>':\n                    in_tag = False\n                elif not in_tag:\n                    clean_text += c\n            clean_text = clean_text.strip()\n            \n            # Build Slack link format\n            if href:\n                if clean_text:\n                    result += '<' + href + '|' + clean_text + '>'\n                else:\n                    result += '<' + href + '>'\n            else:\n                result += clean_text\n            \n            i = close_tag + 4  # Skip past </a>\n        else:\n            result += html[i]\n            i += 1\n    \n    return result\n\ndef html_to_slack_mrkdwn(html):\n    \"\"\"Convert HTML to Slack mrkdwn format\"\"\"\n    # First convert links to Slack format\n    html = convert_links_to_slack(html)\n    \n    # Convert HTML formatting to Slack mrkdwn\n    # Bold: <b>, <strong> -> *text*\n    # Italic: <i>, <em> -> _text_\n    html = html.replace('<b>', '*').replace('</b>', '*')\n    html = html.replace('<B>', '*').replace('</B>', '*')\n    html = html.replace('<strong>', '*').replace('</strong>', '*')\n    html = html.replace('<STRONG>', '*').replace('</STRONG>', '*')\n    html = html.replace('<i>', '_').replace('</i>', '_')\n    html = html.replace('<I>', '_').replace('</I>', '_')\n    html = html.replace('<em>', '_').replace('</em>', '_')\n    html = html.replace('<EM>', '_').replace('</EM>', '_')\n    \n    # Line breaks\n    html = html.replace('<br>', '\\n').replace('<BR>', '\\n')\n    html = html.replace('<br/>', '\\n').replace('<BR/>', '\\n')\n    html = html.replace('<br />', '\\n').replace('<BR />', '\\n')\n    html = html.replace('<p>', '\\n').replace('<P>', '\\n')\n    html = html.replace('</p>', '\\n').replace('</P>', '\\n')\n    html = html.replace('<div>', '\\n').replace('<DIV>', '\\n')\n    html = html.replace('</div>', '').replace('</DIV>', '')\n    \n    # Strip remaining HTML tags but preserve Slack links\n    result = ''\n    i = 0\n    while i < len(html):\n        if html[i] == '<':\n            rest = html[i+1:i+10].lower() if i+1 < len(html) else ''\n            # Keep Slack-formatted links (start with http, https, mailto, tel)\n            if rest.startswith('http') or rest.startswith('mailto') or rest.startswith('tel:'):\n                end = html.find('>', i)\n                if end != -1:\n                    result += html[i:end+1]\n                    i = end + 1\n                    continue\n            # Skip HTML tag\n            end = html.find('>', i)\n            if end != -1:\n                i = end + 1\n            else:\n                i += 1\n        else:\n            result += html[i]\n            i += 1\n    \n    # Decode HTML entities\n    text = result\n    text = text.replace('&nbsp;', ' ')\n    text = text.replace('&amp;', '&')\n    text = text.replace('&lt;', '<')\n    text = text.replace('&gt;', '>')\n    text = text.replace('&quot;', '\"')\n    text = text.replace('&#39;', \"'\")\n    text = text.replace('&rsquo;', \"'\")\n    text = text.replace('&lsquo;', \"'\")\n    text = text.replace('&rdquo;', '\"')\n    text = text.replace('&ldquo;', '\"')\n    text = text.replace('&ndash;', '-')\n    text = text.replace('&mdash;', '-')\n    \n    # Clean up excessive newlines\n    while '\\n\\n\\n' in text:\n        text = text.replace('\\n\\n\\n', '\\n\\n')\n    \n    # Process line by line to fix formatting that spans multiple lines\n    # Slack mrkdwn doesn't support formatting across line breaks\n    lines = text.split('\\n')\n    cleaned_lines = []\n    \n    for line in lines:\n        for marker in ['_', '*']:\n            # Count markers in this line\n            count = line.count(marker)\n            \n            # If odd number of markers, formatting is broken (spans lines)\n            # Remove all markers from this line\n            if count % 2 == 1:\n                line = line.replace(marker, '')\n        \n        # Clean up any double spaces from marker removal\n        while '  ' in line:\n            line = line.replace('  ', ' ')\n        \n        cleaned_lines.append(line.strip())\n    \n    text = '\\n'.join(cleaned_lines)\n    \n    # Clean up excessive newlines\n    while '\\n\\n\\n' in text:\n        text = text.replace('\\n\\n\\n', '\\n\\n')\n    \n    # Remove empty lines at start/end\n    while text.startswith('\\n'):\n        text = text[1:]\n    while text.endswith('\\n'):\n        text = text[:-1]\n    \n    return text\n\n# Process EACH email item individually\nresults = []\nfor idx, item in enumerate(_items):\n    html = item[\"json\"].get(\"html\", \"\")\n    content = html_to_slack_mrkdwn(html).strip()\n    \n    # Create a unique email ID to track attachments\n    email_id = item[\"json\"].get(\"uid\", \"\") or item[\"json\"].get(\"messageId\", \"\") or f\"email_{idx}\"\n    \n    results.append({\n        'text_content': content,\n        'subject': item[\"json\"].get(\"subject\", \"\"),\n        'date': item[\"json\"].get(\"date\", \"\"),\n        'from': item[\"json\"].get(\"from\", \"\"),\n        'email_id': email_id,\n        '_itemIndex': idx\n    })\n\nreturn results"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -960,
+        352
+      ],
+      "id": "e35d3982-e571-430b-bfd8-78f5675e9008",
+      "name": "html to text"
+    },
+    {
+      "parameters": {
+        "jsCode": "/**\n * n8n Code Node: \"Split Attachments\"\n * Place after \"HTML to Text\" node.\n * Outputs one item per attachment (with binary), or one item with no binary when there are no attachments.\n * Now properly handles multiple emails by using _itemIndex to get the correct email's attachments.\n */\n\nconst allInputItems = $input.all();\nconst emailTriggerItems = $('Yahoo Email Trigger (IMAP)').all();\nconst results = [];\n\nfor (const item of allInputItems) {\n  const itemIndex = item.json._itemIndex;\n  const emailId = item.json.email_id;\n  \n  // Get the binary data for THIS specific email using the item index\n  const emailItem = emailTriggerItems[itemIndex];\n  const binaryData = emailItem?.binary || {};\n  const attachmentKeys = Object.keys(binaryData).filter(key => key.startsWith('attachment'));\n  \n  if (attachmentKeys.length === 0) {\n    // No attachments: pass through one item with empty file_links\n    results.push({\n      json: {\n        ...item.json,\n        file_links: [],\n        attachmentCount: 0,\n        _hasAttachments: false\n      }\n    });\n  } else {\n    // One item per attachment; each carries one binary under key \"data\" for Slack node\n    for (const key of attachmentKeys) {\n      const attachment = binaryData[key];\n      results.push({\n        json: {\n          ...item.json,\n          _currentFileName: attachment.fileName || 'attachment',\n          _attachmentKey: key,\n          _hasAttachments: true\n        },\n        binary: {\n          data: attachment\n        }\n      });\n    }\n  }\n}\n\nreturn results;"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -736,
+        352
+      ],
+      "id": "938e622d-16e4-4827-a59b-033e41a65529",
+      "name": "split attachements"
+    },
+    {
+      "parameters": {
+        "jsCode": "/**\n * Aggregate attachments by email_id and build Slack blocks for each email.\n * \n * IMPORTANT: The Slack upload node replaces the JSON with its response,\n * so we need to reference back to 'split attachements' for original email metadata\n * and match by index with the upload responses.\n */\n\nconst uploadResults = $input.all();\nconst originalItems = $('split attachements').all();\n\n// Group by email_id using the ORIGINAL items (which have the metadata)\nconst emailGroups = {};\n\nfor (let i = 0; i < originalItems.length; i++) {\n  const originalItem = originalItems[i];\n  const uploadResult = uploadResults[i];\n  \n  const emailId = originalItem.json.email_id;\n  \n  if (!emailGroups[emailId]) {\n    emailGroups[emailId] = {\n      subject: originalItem.json.subject || 'No Subject',\n      date: originalItem.json.date || '',\n      text_content: originalItem.json.text_content || 'No content',\n      email_id: emailId,\n      fileLinks: []\n    };\n  }\n  \n  // Add file link if the upload result has a permalink (meaning an attachment was uploaded)\n  if (uploadResult?.json?.permalink) {\n    emailGroups[emailId].fileLinks.push({\n      name: uploadResult.json.name || uploadResult.json.title || originalItem.json._currentFileName || 'file',\n      url: uploadResult.json.permalink\n    });\n  }\n}\n\n// Build output: one item per email with its Slack blocks\nconst results = [];\n\nfor (const emailId of Object.keys(emailGroups)) {\n  const emailData = emailGroups[emailId];\n  const { subject, date, text_content, fileLinks } = emailData;\n  \n  const slackBlocks = [\n    { type: 'section', text: { type: 'mrkdwn', text: `*${subject}*` } },\n    { type: 'section', text: { type: 'mrkdwn', text: `_Date: ${date}_` } },\n    { type: 'section', text: { type: 'mrkdwn', text: text_content } }\n  ];\n  \n  if (fileLinks.length > 0) {\n    slackBlocks.push({ type: 'divider' });\n    fileLinks.forEach(file => {\n      slackBlocks.push({\n        type: 'section',\n        text: { type: 'mrkdwn', text: `📎 *Attachment:* <${file.url}|${file.name}>` }\n      });\n    });\n  }\n  \n  results.push({\n    json: {\n      subject,\n      date,\n      text_content,\n      email_id: emailId,\n      file_links: fileLinks,\n      attachmentCount: fileLinks.length,\n      blocks: slackBlocks\n    }\n  });\n}\n\nreturn results;"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -352,
+        352
+      ],
+      "id": "981deaf0-b72e-4c2e-b884-994fb7f4d443",
+      "name": "dynamic slack blocks"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Yahoo Email Trigger (IMAP)": {
+      "main": [
+        [
+          {
+            "node": "html to text",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Switch on email Subject": {
+      "main": [
+        [
+          {
+            "node": "recheck required",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "review pending",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "permit issuance",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "checklist required",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "test flow",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Upload a file": {
+      "main": [
+        [
+          {
+            "node": "dynamic slack blocks",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "html to text": {
+      "main": [
+        [
+          {
+            "node": "split attachements",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "split attachements": {
+      "main": [
+        [
+          {
+            "node": "Upload a file",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "dynamic slack blocks": {
+      "main": [
+        [
+          {
+            "node": "Switch on email Subject",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1",
+    "availableInMCP": false,
+    "timeSavedMode": "fixed",
+    "callerPolicy": "workflowsFromSameOwner"
+  },
+  "versionId": "7b8faf77-42b6-4000-8cf5-082dae418ac7",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "ad9bf1b6c383f34ffb76768f654408165f4366c01127b698518276418b398669"
+  },
+  "id": "vlh2mXY-nnWwZTfrSF5F7",
+  "tags": []
+}
