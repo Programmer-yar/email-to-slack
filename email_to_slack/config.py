@@ -43,11 +43,11 @@ CHANNEL_IDS = {
     "review_pending": "C0ACHG9EFNF",     # pending-invoice-payment
     "permit_issuance": "C0ACHGN84BV",    # permit-issuance
     "checklist_required": "C0ACHGN84BV",  # permit-issuance
-    "test_flow": None,  # sent to user, not channel
+    "test_flow": "C0AD6CFNG9W",  # sent to user, not channel
 }
 
 USER_IDS = {
-    "test_flow": "U0ACD9N7ZTN",  # ahmadyar228
+    # "test_flow": "U0ACD9N7ZTN",  # ahmadyar228
 }
 
 

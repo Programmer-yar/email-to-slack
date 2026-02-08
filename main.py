@@ -2,6 +2,9 @@
 
 import os
 import sys
+import logging
+
+logger = logging.getLogger(__name__)
 
 
 def main() -> None:
@@ -20,10 +23,10 @@ def main() -> None:
     slack = SlackClient(config.slack.token)
 
     emails = fetcher.fetch_unseen()
+    logger.info(f"Fetched {len(emails)} emails")
     # emails = [{'uid': '10000', 'message_id': '<CAO5dYahNK20z+4dX3snGdEvZ6u4HTTV5n5SA8BjVrjHyRtovLQ@mail.gmail.com>', 'subject': 'test flow', 'date': 'Sun, 08 Feb 2026 14:33:39 +0500', 'from': 'Ahmad Yar <ahmadyar228@gmail.com>', 'html': '<div dir="ltr"><i>Hi,<br>This is an email to <b>test</b> the flow</i></div>\r\n', 'attachments': []}]
-    print(f"Emails: {emails}")
     for em in emails:
-        print(f"Email: {em}")
+        # print(f"Email: {em}")
         parsed = parse_email_to_mrkdwn(
             html=em["html"],
             subject=em["subject"],
@@ -31,7 +34,7 @@ def main() -> None:
             from_addr=em["from"],
             email_id=em["message_id"],
         )
-        print(f"Parsed: {parsed}")
+        # print(f"Parsed: {parsed}")
         route_key = None
         for phrase, key in SUBJECT_ROUTES:
             if phrase.lower() in (em["subject"] or "").lower():
@@ -46,8 +49,9 @@ def main() -> None:
             up = slack.upload_file(
                 content=att["content"],
                 filename=att.get("filename", "attachment"),
-                channel_id=channel_id,
+                channel_id=channel_id if channel_id else user_id,
             )
+            print(f"Uploaded file: {up}")
             if up and up.get("permalink"):
                 file_links.append({"name": up["name"], "url": up["permalink"]})
         blocks = build_blocks_for_email(
