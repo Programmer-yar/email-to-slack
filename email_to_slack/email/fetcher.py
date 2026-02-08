@@ -3,7 +3,6 @@
 import imaplib
 from email import policy
 from email.parser import BytesParser
-from pathlib import Path
 
 from ..config import ImapConfig
 
@@ -35,15 +34,6 @@ class EmailFetcher:
         conn.login(self.config.username, self.config.password)
         return conn
 
-    def _last_uid(self) -> str | None:
-        path = Path(self.config.state_file)
-        if not path.exists():
-            return None
-        return path.read_text().strip() or None
-
-    def _save_last_uid(self, uid: str) -> None:
-        Path(self.config.state_file).write_text(uid)
-
     def fetch_unseen(self) -> list[dict]:
         """
         Fetch unseen emails from allowed senders.
@@ -57,22 +47,28 @@ class EmailFetcher:
             if not uids:
                 return []
 
-            last_uid = self._last_uid()
-            if last_uid and last_uid.isdigit():
-                uids = [u for u in uids if int(u) > int(last_uid)]
-
             emails = []
             for uid in uids:
                 uid_s = uid.decode() if isinstance(uid, bytes) else str(uid)
+                # Peek at From header only; do not fetch or mark non-allowed emails.
+                _, head_data = conn.fetch(uid, "(BODY.PEEK[HEADER.FIELDS (FROM)])")
+                if not head_data or not head_data[0]:
+                    continue
+                raw_header = head_data[0][1]
+                if raw_header is None:
+                    continue
+                from_header = _decode_header(
+                    BytesParser(policy=policy.default).parsebytes(raw_header).get("From")
+                )
+                if not _from_matches_allowed(from_header, self.config.allowed_from):
+                    continue
+
+                # Only allowed senders: fetch full message and mark as seen.
                 _, msg_data = conn.fetch(uid, "(RFC822)")
                 if not msg_data or not msg_data[0]:
                     continue
                 raw = msg_data[0][1]
                 msg = BytesParser(policy=policy.default).parsebytes(raw)
-
-                from_header = _decode_header(msg.get("From"))
-                if not _from_matches_allowed(from_header, self.config.allowed_from):
-                    continue
 
                 subject = _decode_header(msg.get("Subject"))
                 date = _decode_header(msg.get("Date"))
@@ -121,8 +117,7 @@ class EmailFetcher:
                     "attachments": attachments,
                 })
 
-                if self.config.track_last_uid:
-                    self._save_last_uid(uid_s)
+                conn.store(uid_s, "+FLAGS", "\\Seen")
 
             return emails
         finally:

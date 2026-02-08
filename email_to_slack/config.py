@@ -1,12 +1,16 @@
 """Configuration and constants derived from the n8n flow."""
 
 import os
+from pathlib import Path
+
+from dotenv import load_dotenv
 from dataclasses import dataclass, field
 from typing import Optional
 
 
 def config_from_env() -> "Config":
-    """Build Config from environment variables (for Cloud Run / serverless)."""
+    """Build Config from environment variables (and .env file if present)."""
+    load_dotenv(Path(__file__).resolve().parents[1] / ".env")
     allowed = os.environ.get(
         "IMAP_ALLOWED_FROM", "noreply@sandiego.gov,ahmadyar228@gmail.com"
     )
@@ -17,7 +21,6 @@ def config_from_env() -> "Config":
             username=os.environ.get("IMAP_USERNAME", ""),
             password=os.environ.get("IMAP_PASSWORD", ""),
             allowed_from=[a.strip() for a in allowed.split(",") if a.strip()],
-            state_file=os.environ.get("STATE_FILE", ".last_email_uid"),
         ),
         slack=SlackConfig(
             token=os.environ.get("SLACK_BOT_TOKEN", ""),
@@ -58,10 +61,8 @@ class ImapConfig:
     password: str = ""
     # UNSEEN + allowed_from (e.g. noreply@sandiego.gov, ahmadyar228@gmail.com)
     allowed_from: list[str] = field(
-        default_factory=lambda: ["noreply@sandiego.gov", "ahmadyar228@gmail.com"]
+        default_factory=lambda: ["ahmadyar228@gmail.com"] #"noreply@sandiego.gov",
     )
-    track_last_uid: bool = True
-    state_file: str = ".last_email_uid"
 
 
 @dataclass

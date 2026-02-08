@@ -62,7 +62,6 @@ gcloud run jobs create email-to-slack-job \
   --set-env-vars="IMAP_PASSWORD=your-app-password" \
   --set-env-vars="IMAP_ALLOWED_FROM=noreply@sandiego.gov,ahmadyar228@gmail.com" \
   --set-env-vars="SLACK_BOT_TOKEN=xoxb-your-slack-token" \
-  --set-env-vars="STATE_FILE=gs://${BUCKET}/state/last_email_uid" \
   --memory=512Mi \
   --cpu=1 \
   --task-timeout=300 \
@@ -120,9 +119,7 @@ Replace `PROJECT_NUMBER` with your project number (`gcloud projects describe ${P
 | Requirement        | Solution                |
 |--------------------|-------------------------|
 | Run every 5 minutes | Cloud Scheduler → Cloud Run Job |
-| Store last UID     | Single object in GCS (`STATE_FILE=gs://bucket/state/last_email_uid`) |
-
-The app reads/writes last UID via `STATE_FILE`. For local runs use a local path (e.g. `.last_email_uid`). For GCP use `gs://your-bucket/state/last_email_uid`; the code uses `google-cloud-storage` when the path starts with `gs://`.
+| Avoid re-processing | Emails are marked as \Seen after fetch; next run only sees new UNSEEN mail. No external state needed. |
 
 ## 6. Manual test
 

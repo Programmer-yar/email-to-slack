@@ -54,16 +54,13 @@ class SlackClient:
         user_id: str | None = None,
         text: str = "City of San Diego Email",
     ) -> bool:
-        """Post a message with Block Kit blocks to a channel or user."""
+        """Post a message with Block Kit blocks. Both channel_id and user_id are used as channel target."""
         try:
-            if user_id:
-                # Open DM and post there
-                conv = self._client.conversations_open(users=[user_id])
-                channel_id = conv.get("channel", {}).get("id")
-            if not channel_id:
+            channel = channel_id or user_id
+            if not channel:
                 return False
             self._client.chat_postMessage(
-                channel=channel_id,
+                channel=channel,
                 text=text,
                 blocks=blocks,
             )

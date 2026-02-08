@@ -5,14 +5,7 @@ import sys
 
 
 def main() -> None:
-    if not os.environ.get("IMAP_HOST") or not os.environ.get("SLACK_BOT_TOKEN"):
-        print(
-            "Set IMAP_HOST, IMAP_USERNAME, IMAP_PASSWORD, SLACK_BOT_TOKEN "
-            "(and optionally STATE_FILE)",
-            file=sys.stderr,
-        )
-        sys.exit(1)
-
+    # TODO: check for environment variables
     from email_to_slack.email import EmailFetcher, parse_email_to_mrkdwn
     from email_to_slack.config import (
         SUBJECT_ROUTES,
@@ -27,7 +20,10 @@ def main() -> None:
     slack = SlackClient(config.slack.token)
 
     emails = fetcher.fetch_unseen()
+    # emails = [{'uid': '10000', 'message_id': '<CAO5dYahNK20z+4dX3snGdEvZ6u4HTTV5n5SA8BjVrjHyRtovLQ@mail.gmail.com>', 'subject': 'test flow', 'date': 'Sun, 08 Feb 2026 14:33:39 +0500', 'from': 'Ahmad Yar <ahmadyar228@gmail.com>', 'html': '<div dir="ltr"><i>Hi,<br>This is an email to <b>test</b> the flow</i></div>\r\n', 'attachments': []}]
+    print(f"Emails: {emails}")
     for em in emails:
+        print(f"Email: {em}")
         parsed = parse_email_to_mrkdwn(
             html=em["html"],
             subject=em["subject"],
@@ -35,6 +31,7 @@ def main() -> None:
             from_addr=em["from"],
             email_id=em["message_id"],
         )
+        print(f"Parsed: {parsed}")
         route_key = None
         for phrase, key in SUBJECT_ROUTES:
             if phrase.lower() in (em["subject"] or "").lower():
@@ -59,6 +56,7 @@ def main() -> None:
             text_content=parsed.text_content,
             file_links=file_links,
         )
+        print(f"Blocks: {blocks}")
         slack.post_blocks(
             blocks=blocks,
             channel_id=channel_id,
