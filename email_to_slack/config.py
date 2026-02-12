@@ -61,7 +61,7 @@ class ImapConfig:
     password: str = ""
     # UNSEEN + allowed_from (e.g. noreply@sandiego.gov, ahmadyar228@gmail.com)
     allowed_from: list[str] = field(
-        default_factory=lambda: ["ahmadyar228@gmail.com"] #"noreply@sandiego.gov",
+        default_factory=lambda: ["noreply@sandiego.gov", "ahmadyar228@gmail.com"]
     )
 
 
