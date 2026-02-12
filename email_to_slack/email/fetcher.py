@@ -1,10 +1,13 @@
 """Fetch emails via IMAP (equivalent to n8n Yahoo Email Trigger)."""
 
 import imaplib
+import logging
 from email import policy
 from email.parser import BytesParser
 
 from ..config import ImapConfig
+
+logger = logging.getLogger(__name__)
 
 
 def _decode_header(value: str | None) -> str:
@@ -30,9 +33,15 @@ class EmailFetcher:
         self.config = config
 
     def _connect(self) -> imaplib.IMAP4_SSL:
-        conn = imaplib.IMAP4_SSL(self.config.host, self.config.port)
-        conn.login(self.config.username, self.config.password)
-        return conn
+        logger.info(f"Connecting to IMAP server: {self.config.host}:{self.config.port}")
+        try:
+            conn = imaplib.IMAP4_SSL(self.config.host, self.config.port)
+            conn.login(self.config.username, self.config.password)
+            logger.info("Successfully connected to IMAP server")
+            return conn
+        except Exception as e:
+            logger.error(f"Failed to connect to IMAP server: {e}")
+            raise
 
     def fetch_unseen(self) -> list[dict]:
         """
@@ -44,10 +53,14 @@ class EmailFetcher:
             conn.select("INBOX")
             _, data = conn.search(None, "UNSEEN")
             uids = data[0].split()
+            
             if not uids:
+                logger.info("No unseen emails found")
                 return []
 
+            logger.info(f"Found {len(uids)} unseen email(s)")
             emails = []
+            
             for uid in uids:
                 uid_s = uid.decode() if isinstance(uid, bytes) else str(uid)
                 # Peek at From header only; do not fetch or mark non-allowed emails.
@@ -60,7 +73,9 @@ class EmailFetcher:
                 from_header = _decode_header(
                     BytesParser(policy=policy.default).parsebytes(raw_header).get("From")
                 )
+                
                 if not _from_matches_allowed(from_header, self.config.allowed_from):
+                    logger.warning(f"Skipping email from non-allowed sender: {from_header}")
                     continue
 
                 # Only allowed senders: fetch full message and mark as seen.
@@ -116,12 +131,17 @@ class EmailFetcher:
                     "html": html or text_plain,
                     "attachments": attachments,
                 })
-
+                
+                logger.info(f"Processed email: '{subject}' from {from_header}")
                 conn.store(uid_s, "+FLAGS", "\\Seen")
 
             return emails
+        except Exception as e:
+            logger.error(f"Error fetching emails: {e}")
+            raise
         finally:
             try:
                 conn.logout()
+                logger.info("Disconnected from IMAP server")
             except Exception:
                 pass

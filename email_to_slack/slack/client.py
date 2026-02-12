@@ -1,9 +1,12 @@
 """Slack API client: upload file and post message with blocks."""
 
+import logging
 from typing import Any
 
 from slack_sdk import WebClient
 from slack_sdk.errors import SlackApiError
+
+logger = logging.getLogger(__name__)
 
 
 class SlackClient:
@@ -19,31 +22,53 @@ class SlackClient:
         filename: str,
         channels: list[str] | None = None,
         channel_id: str | None = None,
+        user_id: str | None = None,
         initial_comment: str | None = None,
     ) -> dict[str, Any] | None:
         """
-        Upload a file. Returns dict with 'permalink' and 'name' on success, None on failure.
-        For Block Kit flow we need the file permalink; channel is optional for upload.
+        Upload a file using files_upload_v2 from Slack SDK.
+        Both channel_id and user_id are used as channel target (channel_id takes precedence).
+        Returns dict with 'permalink' and 'name' on success, None on failure.
         """
+        # Determine which channel to use (channel_id takes precedence)
+        channel = channel_id or user_id
+        
+        if not channel:
+            logger.error("No channel or user ID provided for file upload")
+            return None
+        
+        # Build kwargs - only include channel if it's valid
+        upload_kwargs = {
+            "file": content,
+            "filename": filename,
+        }
+        
+        if channel:
+            upload_kwargs["channel"] = channel
+        
+        if initial_comment:
+            upload_kwargs["initial_comment"] = initial_comment
+        
         try:
-            if channel_id:
-                channels = [channel_id]
-            result = self._client.files_upload_v2(
-                file=content,
-                filename=filename,
-                channel=channels[0] if channels else None,
-                initial_comment=initial_comment,
-            )
-            # files_upload_v2 returns different shape; we need file permalink
+            result = self._client.files_upload_v2(**upload_kwargs)
+            
             if not result.get("ok"):
+                logger.error(f"Failed to upload file '{filename}': {result.get('error', 'Unknown error')}")
                 return None
+            
+            logger.info(f"Successfully uploaded file: {filename}")
+            
             file_info = result.get("file") or {}
             return {
                 "permalink": file_info.get("permalink") or file_info.get("url_private"),
                 "name": filename,
                 "title": file_info.get("title") or filename,
             }
-        except SlackApiError:
+        except SlackApiError as e:
+            logger.error(f"Slack API error uploading file '{filename}': {e.response['error']}")
+            return None
+        except Exception as e:
+            logger.error(f"Unexpected error uploading file '{filename}': {e}")
             return None
 
     def post_blocks(
@@ -55,15 +80,22 @@ class SlackClient:
         text: str = "City of San Diego Email",
     ) -> bool:
         """Post a message with Block Kit blocks. Both channel_id and user_id are used as channel target."""
+        channel = channel_id or user_id
+        if not channel:
+            logger.error("No channel or user ID provided for posting message")
+            return False
+        
         try:
-            channel = channel_id or user_id
-            if not channel:
-                return False
             self._client.chat_postMessage(
                 channel=channel,
                 text=text,
                 blocks=blocks,
             )
+            logger.info(f"Successfully posted message to channel/user: {channel}")
             return True
-        except SlackApiError:
+        except SlackApiError as e:
+            logger.error(f"Slack API error posting message: {e.response['error']}")
+            return False
+        except Exception as e:
+            logger.error(f"Unexpected error posting message: {e}")
             return False
