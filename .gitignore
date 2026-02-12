@@ -9,3 +9,11 @@ wheels/
 # Virtual environments
 .venv
 .env
+.env.*
+!.env.template
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo

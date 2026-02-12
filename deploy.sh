@@ -68,13 +68,17 @@ echo "  Project Number: $PROJECT_NUMBER"
 
 # ============================================================================
 # STEP 2/8: Enable required GCP services/APIs
+# - Cloud Run: to run containerized jobs
+# - Cloud Build: for building containers
+# - Cloud Scheduler: for automated scheduling
+# - Artifact Registry: for storing Docker images
 # ============================================================================
 echo -e "\n${GREEN}[2/8] Enabling required GCP APIs...${NC}"
 gcloud services enable \
-  run.googleapis.com \                # Cloud Run - to run containerized jobs
-  cloudbuild.googleapis.com \         # Cloud Build - for building containers
-  cloudscheduler.googleapis.com \     # Cloud Scheduler - for automated scheduling
-  artifactregistry.googleapis.com     # Artifact Registry - for storing Docker images
+  run.googleapis.com \
+  cloudbuild.googleapis.com \
+  cloudscheduler.googleapis.com \
+  artifactregistry.googleapis.com
 
 # ============================================================================
 # STEP 3/8: Create Artifact Registry repository to store Docker images
@@ -121,6 +125,7 @@ if [ "$JOB_EXISTS" = "false" ]; then
   
   # Display the command template with placeholder values
   # User must replace these with their actual credentials
+  # NOTE: Use ^ to escape special characters like @ and , in gcloud
   cat << EOF
 gcloud run jobs create ${JOB_NAME} \\
   --image=${IMAGE_URI} \\
